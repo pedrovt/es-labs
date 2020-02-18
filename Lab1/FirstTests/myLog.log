@@ -1,0 +1,11 @@
+2020-02-14 17:41:24 INFO  Info log message
+w2020-02-14 17:41:24 ERROR Error log message
+w2020-02-14 17:43:21 INFO  New Info log message
+w2020-02-14 17:43:21 ERROR New Error log message
+w2020-02-14 17:43:21 WARN  New warn log message
+w2020-02-14 17:43:57 DEBUG New Debug log message
+w2020-02-14 17:43:57 INFO  New Info log message
+w2020-02-14 17:43:57 ERROR New Error log message
+w2020-02-14 17:43:57 WARN  New warn log message
+w2020-02-14 17:43:57 TRACE New trace log message
+w
