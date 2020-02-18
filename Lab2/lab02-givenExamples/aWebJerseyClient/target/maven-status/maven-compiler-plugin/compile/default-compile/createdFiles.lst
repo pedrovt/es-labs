@@ -1,0 +1,4 @@
+client\ARestClient.class
+sv\QuotesServlet.class
+sv\TimerServlet.class
+timer\AutomaticTimerBean.class
