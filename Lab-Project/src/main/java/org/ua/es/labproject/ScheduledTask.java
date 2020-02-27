@@ -27,9 +27,12 @@ public class ScheduledTask {
     private static final SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
 
     @Scheduled(fixedRate = 5000)
-    public void reportCurrentTime() {
+    public void updateStateInfo() {
         log.info("Updating the model. The time is now {}", dateFormat.format(new Date()));
 
+        /* TODO get info from API based on code on controllers.StatesController.getStates */
+
+        /* TODO update repository */
 
     }
 }

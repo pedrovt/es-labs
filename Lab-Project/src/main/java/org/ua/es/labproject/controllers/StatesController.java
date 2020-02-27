@@ -3,6 +3,7 @@ package org.ua.es.labproject.controllers;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -10,19 +11,21 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 import org.ua.es.labproject.ScheduledTask;
+import org.ua.es.labproject.models.State;
 import org.ua.es.labproject.models.States;
 
 import java.text.SimpleDateFormat;
+import java.util.List;
 
 /**
- * labproject - TestController <br>
+ * labproject - StatesController <br>
  *
  * @author Pedro Teixeira pedro.teix@ua.pt
  * @version 1.0 - February 22, 2020
  */
 
 @Controller
-public class TestController {
+public class StatesController {
 
     @Autowired
     private RestTemplate restTemplate;
@@ -31,26 +34,27 @@ public class TestController {
     private static final SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
 
     // lamin=&lomin=5.9962&lamax=47.8229&lomax=10.5226
+    @GetMapping("/states")
+    public String states(@RequestParam(name="lamin", required=false, defaultValue = "45.8389") double lamin,
+                         @RequestParam(name="lomin", required=false, defaultValue = "5.9962") double lomin,
+                         @RequestParam(name="lamax", required=false, defaultValue = "47.8229") double lamax,
+                         @RequestParam(name="lomax", required=false, defaultValue = "10.5226") double lomax, Model model) {
 
-    @GetMapping("/test")
-    public String test(@RequestParam(name="lamin", required=false, defaultValue = "45.8389") double lamin,
-                        @RequestParam(name="lomin", required=false, defaultValue = "5.9962") double lomin,
-                        @RequestParam(name="lamax", required=false, defaultValue = "47.8229") double lamax,
-                        @RequestParam(name="lomax", required=false, defaultValue = "10.5226") double lomax, Model model) {
-
-        log.info("GET - /test - lamin-lomin-lamax-lomax " + lamin + lomin + lamax + lomax);
+        log.info("GET - /states - lamin-lomin-lamax-lomax " + lamin + lomin + lamax + lomax);
 
         model.addAttribute("lamin", lamin);
         model.addAttribute("lomin", lomin);
         model.addAttribute("lamax", lamax);
         model.addAttribute("lomax", lomax);
 
-        log.info("GET - /test - result is " + getStates(model));
-        return "test";
+        getStates(model);
+
+        /* todo retrive from repository instead of using getStates() */
+        return "states";
     }
 
-    private String getStates(Model model){
-        log.info("Aux - getStates");
+    private void getStates(Model model){
+        log.info("GET - /states - getStates");
 
         String url = "https://opensky-network.org/api/states/all";
         UriComponentsBuilder builder =  UriComponentsBuilder.fromHttpUrl(url)
@@ -59,14 +63,15 @@ public class TestController {
                                         .queryParam("lamax", model.getAttribute("lamax"))
                                         .queryParam("lomax", model.getAttribute("lomax"));
         url = builder.build().toUriString();
-        log.info("Aux - getStates - URI is " + url);
+        log.info("GET - /states - getStates - URL is " + url);
 
-        States state = restTemplate.getForObject(url, States.class);
+        States states = restTemplate.getForObject(url, States.class);
+        List<State> listOfStates = states.getStates();
 
-        log.info("Aux - getStates - state " + state);
-        log.info("Aux - getStates - state value" + state.getStates().toString());
+        //log.info("GET - /states - getStates - states\n" + states.getStates());
 
-        return state.getStates().toString();
+        model.addAttribute("time", states.getTime());
+        model.addAttribute("states", listOfStates);
     }
 
 }

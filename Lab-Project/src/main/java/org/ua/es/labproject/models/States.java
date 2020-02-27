@@ -21,7 +21,7 @@ public class States {
     private List<State> parsed_states;
 
     public States() {
-        System.out.println("Creating a state");
+
     }
 
     public int getTime() {
@@ -32,18 +32,15 @@ public class States {
         this.time = time;
     }
 
-    public List getStates() {
-        return states;
+    public List<State> getStates() {
+        return parsed_states;
     }
 
     public void setStates(List<List> states) {
-
-        System.out.println("Setting a state");
         // Parsing the states from a list of generics into a list of state objects
 
         parsed_states = new LinkedList<>();
         for (List state : states ) {
-            System.out.println(" STATE IS " + state);
             parsed_states.add(new State(state));
         }
 
