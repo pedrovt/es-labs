@@ -1,8 +1,5 @@
 package org.ua.es.labproject.controllers;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.type.CollectionType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,11 +10,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 import org.ua.es.labproject.ScheduledTask;
-import org.ua.es.labproject.models.State;
-import org.ua.es.labproject.models.Value;
+import org.ua.es.labproject.models.States;
 
 import java.text.SimpleDateFormat;
-import java.util.List;
 
 /**
  * labproject - TestController <br>
@@ -66,27 +61,11 @@ public class TestController {
         url = builder.build().toUriString();
         log.info("Aux - getStates - URI is " + url);
 
-        State state = restTemplate.getForObject(url, State.class);
+        States state = restTemplate.getForObject(url, States.class);
 
         log.info("Aux - getStates - state " + state);
         log.info("Aux - getStates - state value" + state.getStates().toString());
 
-        /* parse states info */
-        List states = state.getStates();
-        String info = states.toString();
-
-        ObjectMapper mapper = new ObjectMapper();
-        CollectionType javaType = mapper.getTypeFactory().constructCollectionType(List.class, Value.class);
-
-        try {
-            List<Value> statesAsList = mapper.readValue(info, javaType);
-            info = statesAsList.toString();
-        } catch (JsonProcessingException e) {
-            log.error("Error" + e + "\nCouldn't convert states into a list of Values array! Using toString representation");
-            info = states.toString();
-        }
-
-        model.addAttribute("info", info);
         return state.getStates().toString();
     }
 

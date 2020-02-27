@@ -17,6 +17,13 @@
 
     <properties>
         <java.version>1.8</java.version>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <servlet.port>8081</servlet.port>
+        <payara.adminPort>4848</payara.adminPort>
+        <payara.username>admin</payara.username>
+        <payara.password>admin</payara.password>
+        <payara.hostname>localhost</payara.hostname>
     </properties>
 
     <dependencies>
@@ -51,7 +58,19 @@
                 </exclusion>
             </exclusions>
         </dependency>
+        <dependency>
+            <groupId>org.awaitility</groupId>
+            <artifactId>awaitility</artifactId>
+            <version>3.1.2</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>1.18.12</version>
+        </dependency>
     </dependencies>
+
 
     <build>
         <plugins>
@@ -61,5 +80,6 @@
             </plugin>
         </plugins>
     </build>
+
 
 </project>
