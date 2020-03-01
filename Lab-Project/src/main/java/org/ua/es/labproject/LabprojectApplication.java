@@ -20,6 +20,9 @@ public class LabprojectApplication {
     // Static constants
     private static final Logger log = LoggerFactory.getLogger(LabprojectApplication.class);
 
+    @Autowired
+    private StateRepository repository;
+
     public static void main(String args[]) {
         SpringApplication.run(LabprojectApplication.class);
     }

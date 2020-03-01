@@ -4,6 +4,11 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import java.util.List;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+
 /**
  * labproject - PublicAPI_Entry <br>
  * Based on given examples <br>
@@ -11,7 +16,12 @@ import java.util.List;
  * @version 1.0 - February 22, 2020
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
+@Entity
 public class State {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id;
 
     private String icao24;
     private String callsign;
