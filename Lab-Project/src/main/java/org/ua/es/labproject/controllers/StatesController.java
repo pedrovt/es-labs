@@ -30,6 +30,8 @@ public class StatesController {
     @Autowired
     private RestTemplate restTemplate;
 
+    private States cache;
+
     private static final Logger log = LoggerFactory.getLogger(ScheduledTask.class);
     private static final SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
 
@@ -47,15 +49,15 @@ public class StatesController {
         model.addAttribute("lamax", lamax);
         model.addAttribute("lomax", lomax);
 
-        getStates(model);
-
-        /* todo retrive from repository instead of using getStates() */
+        if(cache==null) {
+            cache = getStates(model);
+        }
+        statesToModel(cache,model);
         return "states";
     }
 
-    private void getStates(Model model){
+    private States getStates(Model model){
         log.info("GET - /states - getStates");
-
         String url = "https://opensky-network.org/api/states/all";
         UriComponentsBuilder builder =  UriComponentsBuilder.fromHttpUrl(url)
                                         .queryParam("lamin", model.getAttribute("lamin"))
@@ -64,14 +66,18 @@ public class StatesController {
                                         .queryParam("lomax", model.getAttribute("lomax"));
         url = builder.build().toUriString();
         log.info("GET - /states - getStates - URL is " + url);
+        return restTemplate.getForObject(url, States.class);
+    }
 
-        States states = restTemplate.getForObject(url, States.class);
-        List<State> listOfStates = states.getStates();
-
-        //log.info("GET - /states - getStates - states\n" + states.getStates());
-
+    public void statesToModel (States states, Model model) {
         model.addAttribute("time", states.getTime());
-        model.addAttribute("states", listOfStates);
+        model.addAttribute("states", states.getStates());
+    }
+
+    @Scheduled(fixedRate = 10000)
+    public void updateStateInfo() {
+        log.info("Cleaning cache");
+        cache = null;
     }
 
 }

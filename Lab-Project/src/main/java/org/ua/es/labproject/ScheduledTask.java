@@ -28,7 +28,10 @@ public class ScheduledTask {
 
     @Scheduled(fixedRate = 5000)
     public void updateStateInfo() {
-        log.info("Updating the model. The time is now {}", dateFormat.format(new Date()));
+        //log.info("Updating the model. The time is now {}", dateFormat.format(new Date()));
+        log.info("Cleaning cache");
+
+        
 
         /* TODO get info from API based on code on controllers.StatesController.getStates */
 

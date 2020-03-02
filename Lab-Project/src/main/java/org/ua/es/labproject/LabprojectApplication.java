@@ -1,10 +1,13 @@
 package org.ua.es.labproject;
 
+import org.ua.es.labproject.models.StateRepository;
+
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -16,9 +19,13 @@ import org.springframework.web.client.RestTemplate;
 @SpringBootApplication
 @EnableScheduling
 public class LabprojectApplication {
+//public class LabprojectApplication implements CommandLineRunner {
 
     // Static constants
     private static final Logger log = LoggerFactory.getLogger(LabprojectApplication.class);
+
+    @Autowired
+    private StateRepository repository;
 
     public static void main(String args[]) {
         SpringApplication.run(LabprojectApplication.class);
@@ -28,4 +35,11 @@ public class LabprojectApplication {
     public RestTemplate restTemplate(RestTemplateBuilder builder) {
         return builder.build();
     }
+
+    // @Override
+    // public void run(String... args) {
+
+    //     log.info("StartApplication...");
+
+    // }
 }
