@@ -12,6 +12,6 @@ import java.util.List;
  */
 public interface StateRepository extends CrudRepository<State, Long> {
 
-    List<State> findByICAO(String icao24);
+    List<State> findByicao24(String icao24);
 
 }
