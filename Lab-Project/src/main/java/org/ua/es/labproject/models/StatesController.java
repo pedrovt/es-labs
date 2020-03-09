@@ -1,4 +1,4 @@
-package org.ua.es.labproject.controllers;
+package org.ua.es.labproject.models;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,6 +30,9 @@ public class StatesController {
     @Autowired
     private RestTemplate restTemplate;
 
+    @Autowired
+    private StateRepository repository;
+
     private States cache;
 
     private static final Logger log = LoggerFactory.getLogger(ScheduledTask.class);
@@ -41,6 +44,29 @@ public class StatesController {
                          @RequestParam(name="lomin", required=false, defaultValue = "5.9962") double lomin,
                          @RequestParam(name="lamax", required=false, defaultValue = "47.8229") double lamax,
                          @RequestParam(name="lomax", required=false, defaultValue = "10.5226") double lomax, Model model) {
+
+        log.info("Start test");
+
+        State exampleState = new State();
+        exampleState.setIcao24("a808c4");
+        exampleState.setCallsign("PDT4985");
+        repository.saveAndFlush(exampleState);
+
+        log.warn("SAVED");
+
+        List<State> books = repository.findByicao24("a808c4");
+        log.warn("READ");
+        log.warn("BOOKS ARE" + books.toString());
+
+        if (books.size() != 1) {
+            log.error("SHOULD HAVE FOUND 1 a808c4 flight");
+        }
+        if (!books.get(0).getCallsign().equals("PDT4985")) {
+            log.error("SHOULD HAVE FOUND 1 PDT4985 flight");
+        }
+
+        log.info("Stop test");
+
 
         log.info("GET - /states - lamin-lomin-lamax-lomax " + lamin + lomin + lamax + lomax);
 

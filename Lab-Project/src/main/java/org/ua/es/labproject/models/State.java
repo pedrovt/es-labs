@@ -4,10 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import java.util.List;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 /**
  * labproject - PublicAPI_Entry <br>
@@ -17,6 +14,7 @@ import javax.persistence.Id;
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
 @Entity
+@Table(name = "State")
 public class State {
 
     @Id

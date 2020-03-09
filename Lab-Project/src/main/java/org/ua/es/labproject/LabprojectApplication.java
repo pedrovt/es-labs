@@ -1,5 +1,6 @@
 package org.ua.es.labproject;
 
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.ua.es.labproject.models.StateRepository;
 
 import org.springframework.boot.SpringApplication;
