@@ -7,8 +7,8 @@ import java.util.List;
 import javax.persistence.*;
 
 /**
- * labproject - PublicAPI_Entry <br>
- * Based on given examples <br>
+ * labproject - State <br>
+ *
  * @author Pedro Teixeira pedro.teix@ua.pt
  * @version 1.0 - February 22, 2020
  */
@@ -19,7 +19,7 @@ public class State {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+    private Long flightID;
 
     private String icao24;
     private String callsign;
@@ -61,6 +61,10 @@ public class State {
         setSquawk(state.get(14));
         setSpi(state.get(15));
         setPosition_source(state.get(16));
+    }
+
+    public Long getFlightID() {
+        return flightID;
     }
 
     public String getIcao24() {

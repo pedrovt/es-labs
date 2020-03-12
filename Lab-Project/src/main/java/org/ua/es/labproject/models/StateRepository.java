@@ -13,7 +13,7 @@ import java.util.List;
  */
 public interface StateRepository extends JpaRepository<State, Long> {
 
-    List<State> findByid(long id);
+    List<State> findByFlightID(Long flightID);
     List<State> findByicao24(String icao24);
     List<State> findBycallsign(String callsign);
 

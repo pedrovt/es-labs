@@ -7,8 +7,8 @@ import java.util.LinkedList;
 import java.util.List;
 
 /**
- * labproject - State <br>
- * Based on given examples <br>
+ * labproject - States <br>
+ *
  * @author Pedro Teixeira pedro.teix@ua.pt
  * @version 1.0 - February 22, 2020
  */
