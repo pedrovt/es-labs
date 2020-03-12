@@ -26,6 +26,7 @@
         <table class="table table-striped">
             <thead class="thead-dark">
                 <tr>
+                    <th> ID </th>
                     <th> ICAO24 </th>
                     <th> Callsign </th>
                     <th> Origin country </th>
@@ -41,6 +42,7 @@
                     <td colspan="2"> No Books Available </td>
                 </tr>
                 <tr th:each="state : ${states}">
+                    <td><span th:text="${state.getFlightID()}"></span></td>
                     <td><span th:text="${state.getIcao24()}"></span></td>
                     <td><span th:text="${state.getCallsign()}"></span></td>
                     <td><span th:text="${state.getOrigin_country()}"></span></td>
