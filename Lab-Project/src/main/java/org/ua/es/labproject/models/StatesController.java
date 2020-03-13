@@ -139,6 +139,7 @@ public class StatesController {
         exampleState.setLongitude(lon);
         exampleState.setGeo_altitude(geoalt);
         exampleState.setVelocity(vel);
+        exampleState.setUserCreated(true);
         repository.saveAndFlush(exampleState);
 
         log.info("Saved State to DB");

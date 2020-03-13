@@ -38,12 +38,26 @@ public class State {
     private String squawk;
     private String spi;
     private int position_source;
+    private boolean userCreated;
 
 
     public State() {
     }
 
+    /**
+     * Constructor for automatically parsed flights
+     * @param state
+     */
     public State(List state) {
+        this(state, false);
+    }
+
+    /**
+     * Constructor for user generated flights
+     * @param state
+     * @param userCreated
+     */
+    public State(List state, boolean userCreated) {
         setIcao24(state.get(0));
         setCallsign(state.get(1));
         setOrigin_country(state.get(2));
@@ -61,6 +75,7 @@ public class State {
         setSquawk(state.get(14));
         setSpi(state.get(15));
         setPosition_source(state.get(16));
+        setUserCreated(userCreated);
     }
 
     public Long getFlightID() {
@@ -311,6 +326,13 @@ public class State {
                 '}';
     }
 
+    public boolean isUserCreated() {
+        return userCreated;
+    }
+
+    public void setUserCreated(boolean userCreated) {
+        this.userCreated = userCreated;
+    }
 }
 
 

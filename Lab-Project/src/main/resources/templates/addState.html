@@ -19,40 +19,38 @@
 
 <main role="main" class="container">
 
-    <div>
-        <h1 style="text-align: center;">Flights State</h1>
-        <a>Added State></a>
-        <br><br>
-        <table class="table table-striped">
-            <thead class="thead-dark">
-                <tr>
-                    <th> ICAO24 </th>
-                    <th> Callsign </th>
-                    <th> Origin country </th>
-                    <th> Time position </th>
-                    <th> Latitude </th>
-                    <th> Longitude </th>
-                    <th> Geoaltitude</th>
-                    <th> Velocity </th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr th:if="${states.empty}">
-                    <td colspan="2"> No Books Available </td>
-                </tr>
-                <tr th:each="state : ${states}">
-                    <td><span th:text="${state.getIcao24()}"></span></td>
-                    <td><span th:text="${state.getCallsign()}"></span></td>
-                    <td><span th:text="${state.getOrigin_country()}"></span></td>
-                    <td><span th:text="${state.getTime_position()}"></span></td>
-                    <td><span th:text="${state.getLatitude()}"></span></td>
-                    <td><span th:text="${state.getLongitude()}"></span></td>
-                    <td><span th:text="${state.getGeo_altitude()}"></span></td>
-                    <td><span th:text="${state.getVelocity()}"></span></td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
+    <h1 style="text-align: center;">Added State Successfully</h1>
+    <br><br>
+    <table class="table table-striped">
+        <thead class="thead-dark">
+        <tr>
+            <th> ID </th>
+            <th> User Generated </th>
+            <th> ICAO24 </th>
+            <th> Callsign </th>
+            <th> Origin country </th>
+            <th> Time position </th>
+            <th> Latitude </th>
+            <th> Longitude </th>
+            <th> Geoaltitude</th>
+            <th> Velocity </th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td><span th:text="${state.getFlightID()}"></span></td>
+            <td><span th:text="${state.isUserCreated()}"></span></td>
+            <td><span th:text="${state.getIcao24()}"></span></td>
+            <td><span th:text="${state.getCallsign()}"></span></td>
+            <td><span th:text="${state.getOrigin_country()}"></span></td>
+            <td><span th:text="${state.getTime_position()}"></span></td>
+            <td><span th:text="${state.getLatitude()}"></span></td>
+            <td><span th:text="${state.getLongitude()}"></span></td>
+            <td><span th:text="${state.getGeo_altitude()}"></span></td>
+            <td><span th:text="${state.getVelocity()}"></span></td>
+        </tr>
+        </tbody>
+    </table>
 
 </main><!-- /.container -->
 
