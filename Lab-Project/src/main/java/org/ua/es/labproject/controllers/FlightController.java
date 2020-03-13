@@ -1,4 +1,4 @@
-package org.ua.es.labproject.models;
+package org.ua.es.labproject.controllers;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,9 +11,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 import org.ua.es.labproject.ScheduledTask;
+import org.ua.es.labproject.models.API_Result;
+import org.ua.es.labproject.models.Flight;
+import org.ua.es.labproject.models.FlightRepository;
 
 import java.text.SimpleDateFormat;
-import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
@@ -68,37 +70,43 @@ public class FlightController {
     /* ############################################################################################################## */
     @Scheduled(fixedRate = 10000)
     public void updateFlights() {
-        log.info("Updating State DB from API Info");
+        log.info("Updating state cache (repository/database) with OpenSky API Info");
 
         try {
-            List<Flight> resultsFromAPI = getListOfStates();
+            /* Get states from API */
+            List<Flight> resultsFromAPI = getFlightsFromAPI();
             resultsFromAPI = resultsFromAPI.subList(0, resultsFromAPI.size()/3);
+
+            /* Remove old states to avoid database capacity issues */
             for (Flight flight : resultsFromAPI) {
                 List<Flight> statesToRemove = repository.findBycallsign(flight.getCallsign());
                 repository.deleteAll(statesToRemove);
                 repository.saveAndFlush(flight);
             }
-            log.info("Updated DB");
+
+            /* Update database update time */
             date = new Date();
+
+            log.info("Updated state cache (repository/database) with OpenSky API Info");
+
         } catch (Exception e) {
-            log.error("API not available ({}). Using DB Values".format(e.getMessage()));
+            log.error("ERROR! Error updating state cache (repository/database) with OpenSky API");
+            log.error("API not available (" + e.toString() + ")");
+            log.warn("No changes to cache");
         }
+
         cache = repository.findAll();
-        cache.sort(new Comparator<Flight>() {
-            @Override
-            public int compare(Flight o1, Flight o2) {
-                return (int) (o1.getFlightID() - o2.getFlightID());
-            }
-        });
+        cache.sort((o1, o2) -> (int) (o1.getFlightID() - o2.getFlightID()));        // order cache
     }
 
-    public List<Flight> getListOfStates() {
-        //log.info("GET - /getListOfStates");
+    public List<Flight> getFlightsFromAPI() {
+        log.info("Obtaining list of states from OpenSky API");
 
         /* Build URL */
         String url = "https://opensky-network.org/api/states/all?lamin=45.8389&lomin=5.0&lamax=47.8229&lomax=11.5226";
         UriComponentsBuilder builder =  UriComponentsBuilder.fromHttpUrl(url);
         url = builder.build().toUriString();
+        log.info("URL is " + url);
 
         /* In production
         String url = "https://opensky-network.org/api/states/all";
@@ -110,10 +118,11 @@ public class FlightController {
         url = builder.build().toUriString();
         */
 
-        //log.info("GET - /states - getListOfStates - URL is " + url);
+        /* Retrieve results and automatically parse them into a list of Flights */
         API_Result apiResult = restTemplate.getForObject(url, API_Result.class);
+        log.info("Success obtaining list of states from OpenSky API");
+        //log.info("Results are " + states.getStates());
 
-        //log.info("GET - /states - getListOfStates - results are " + states.getStates());
         return apiResult.getStates();
     }
 
