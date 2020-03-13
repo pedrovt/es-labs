@@ -12,9 +12,10 @@ import org.springframework.web.client.RestTemplate;
 
 /**
  * labproject - ScheduledTask <br>
- * Based on given examples <br>
+ *
+ * @author Paulo Vasconcelos paulobvasconcelos@gmail.com
  * @author Pedro Teixeira pedro.teix@ua.pt
- * @version 1.0 - February 22, 2020
+ * @version 2.0 - March 11, 2020
  */
 @Component
 public class ScheduledTask {

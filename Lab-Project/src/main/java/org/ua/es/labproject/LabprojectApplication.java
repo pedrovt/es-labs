@@ -1,17 +1,10 @@
 package org.ua.es.labproject;
 
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
-import org.ua.es.labproject.models.StateRepository;
-
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.CommandLineRunner;
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.scheduling.annotation.EnableScheduling;
@@ -19,7 +12,13 @@ import org.springframework.web.client.RestTemplate;
 
 @SpringBootApplication
 @EnableScheduling
-
+/**
+ * labproject
+ *
+ * @author Paulo Vasconcelos paulobvasconcelos@gmail.com
+ * @author Pedro Teixeira pedro.teix@ua.pt
+ * @version 2.0 - March 11, 2020
+ */
 public class LabprojectApplication {
 //public class LabprojectApplication implements CommandLineRunner {
 

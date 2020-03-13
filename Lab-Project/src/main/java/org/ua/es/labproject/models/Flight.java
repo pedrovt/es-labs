@@ -9,13 +9,14 @@ import javax.persistence.*;
 /**
  * labproject - State <br>
  *
+ * @author Paulo Vasconcelos paulobvasconcelos@gmail.com
  * @author Pedro Teixeira pedro.teix@ua.pt
- * @version 1.0 - February 22, 2020
+ * @version 2.0 - March 11, 2020
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
 @Entity
-@Table(name = "State")
-public class State {
+@Table(name = "Flight")
+public class Flight {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -41,14 +42,14 @@ public class State {
     private boolean userCreated;
 
 
-    public State() {
+    public Flight() {
     }
 
     /**
      * Constructor for automatically parsed flights
      * @param state
      */
-    public State(List state) {
+    public Flight(List state) {
         this(state, false);
     }
 
@@ -57,7 +58,7 @@ public class State {
      * @param state
      * @param userCreated
      */
-    public State(List state, boolean userCreated) {
+    public Flight(List state, boolean userCreated) {
         setIcao24(state.get(0));
         setCallsign(state.get(1));
         setOrigin_country(state.get(2));

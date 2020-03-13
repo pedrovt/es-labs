@@ -9,18 +9,19 @@ import java.util.List;
 /**
  * labproject - States <br>
  *
+ * @author Paulo Vasconcelos paulobvasconcelos@gmail.com
  * @author Pedro Teixeira pedro.teix@ua.pt
- * @version 1.0 - February 22, 2020
+ * @version 2.0 - March 11, 2020
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class States {
+public class API_Result {
 
     private int time;
     private List<List> states;
     @JsonIgnore
-    private List<State> parsed_states;
+    private List<Flight> parsed_flights;
 
-    public States() {
+    public API_Result() {
 
     }
 
@@ -32,19 +33,19 @@ public class States {
         this.time = time;
     }
 
-    public List<State> getStates() {
-        return parsed_states;
+    public List<Flight> getStates() {
+        return parsed_flights;
     }
 
     public void setStates(List<List> states) {
         // Parsing the states from a list of generics into a list of state objects
 
-        parsed_states = new LinkedList<>();
+        parsed_flights = new LinkedList<>();
         for (List state : states ) {
-            parsed_states.add(new State(state));
+            parsed_flights.add(new Flight(state));
         }
 
-        this.parsed_states = parsed_states;
+        this.parsed_flights = parsed_flights;
         this.states = states;
     }
 

@@ -18,14 +18,15 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * labproject - StatesController <br>
+ * labproject - FlightsController <br>
  *
+ * @author Paulo Vasconcelos paulobvasconcelos@gmail.com
  * @author Pedro Teixeira pedro.teix@ua.pt
- * @version 1.0 - February 22, 2020
+ * @version 2.0 - March 11, 2020
  */
 
 @Controller
-public class StatesController {
+public class FlightController {
     /* ############################################################################################################## */
     /* Constants */
     private static final Logger log = LoggerFactory.getLogger(ScheduledTask.class);
@@ -33,8 +34,8 @@ public class StatesController {
 
     /* Instance Fields */
     @Autowired private RestTemplate restTemplate;
-    @Autowired private StateRepository repository;
-    private List<State> cache;
+    @Autowired private FlightRepository repository;
+    private List<Flight> cache;
     private Date date = new Date();
 
     /* ############################################################################################################## */
@@ -70,12 +71,12 @@ public class StatesController {
         log.info("Updating State DB from API Info");
 
         try {
-            List<State> resultsFromAPI = getListOfStates();
+            List<Flight> resultsFromAPI = getListOfStates();
             resultsFromAPI = resultsFromAPI.subList(0, resultsFromAPI.size()/3);
-            for (State state : resultsFromAPI) {
-                List<State> statesToRemove = repository.findBycallsign(state.getCallsign());
+            for (Flight flight : resultsFromAPI) {
+                List<Flight> statesToRemove = repository.findBycallsign(flight.getCallsign());
                 repository.deleteAll(statesToRemove);
-                repository.saveAndFlush(state);
+                repository.saveAndFlush(flight);
             }
             log.info("Updated DB");
             date = new Date();
@@ -83,15 +84,15 @@ public class StatesController {
             log.error("API not available ({}). Using DB Values".format(e.getMessage()));
         }
         cache = repository.findAll();
-        cache.sort(new Comparator<State>() {
+        cache.sort(new Comparator<Flight>() {
             @Override
-            public int compare(State o1, State o2) {
+            public int compare(Flight o1, Flight o2) {
                 return (int) (o1.getFlightID() - o2.getFlightID());
             }
         });
     }
 
-    public List<State> getListOfStates() {
+    public List<Flight> getListOfStates() {
         //log.info("GET - /getListOfStates");
 
         /* Build URL */
@@ -110,10 +111,10 @@ public class StatesController {
         */
 
         //log.info("GET - /states - getListOfStates - URL is " + url);
-        States states = restTemplate.getForObject(url, States.class);
+        API_Result apiResult = restTemplate.getForObject(url, API_Result.class);
 
         //log.info("GET - /states - getListOfStates - results are " + states.getStates());
-        return states.getStates();
+        return apiResult.getStates();
     }
 
     /* ############################################################################################################## */
@@ -130,22 +131,22 @@ public class StatesController {
 
         log.info("Adding a new state to the database");
 
-        State newState = new State();
-        newState.setIcao24(icao);
-        newState.setCallsign(callsgn);
-        newState.setOrigin_country(origin);
-        newState.setTime_position(time);
-        newState.setLatitude(lat);
-        newState.setLongitude(lon);
-        newState.setGeo_altitude(geoalt);
-        newState.setVelocity(vel);
-        newState.setUserCreated(true);
-        repository.saveAndFlush(newState);
+        Flight newFlight = new Flight();
+        newFlight.setIcao24(icao);
+        newFlight.setCallsign(callsgn);
+        newFlight.setOrigin_country(origin);
+        newFlight.setTime_position(time);
+        newFlight.setLatitude(lat);
+        newFlight.setLongitude(lon);
+        newFlight.setGeo_altitude(geoalt);
+        newFlight.setVelocity(vel);
+        newFlight.setUserCreated(true);
+        repository.saveAndFlush(newFlight);
 
-        log.info("Saved State" + newState + " to database");
+        log.info("Saved State" + newFlight + " to database");
 
-        model.addAttribute("flight", newState);
+        model.addAttribute("flight", newFlight);
 
-        return "addState";
+        return "addFlight";
     }
 }
