@@ -26,74 +26,47 @@ import java.util.List;
 
 @Controller
 public class StatesController {
-
-    @Autowired
-    private RestTemplate restTemplate;
-
-    @Autowired
-    private StateRepository repository;
-
-    private List<State> cache;
-
+    /* ############################################################################################################## */
+    /* Constants */
     private static final Logger log = LoggerFactory.getLogger(ScheduledTask.class);
     private static final SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
 
-    // lamin=&lomin=5.9962&lamax=47.8229&lomax=10.5226
-    @GetMapping("/states")
-    public String states(@RequestParam(name="lamin", required=false, defaultValue = "45.8389") double lamin,
-                         @RequestParam(name="lomin", required=false, defaultValue = "5.9962") double lomin,
-                         @RequestParam(name="lamax", required=false, defaultValue = "47.8229") double lamax,
-                         @RequestParam(name="lomax", required=false, defaultValue = "10.5226") double lomax, Model model) {
+    /* Instance Fields */
+    @Autowired private RestTemplate restTemplate;
+    @Autowired private StateRepository repository;
+    private List<State> cache;
+    private Date date = new Date();
 
-        log.info("GET - /states - lamin-lomin-lamax-lomax " + lamin + lomin + lamax + lomax);
+    /* ############################################################################################################## */
+    /* View Endpoints */
+    @GetMapping("/flights")
+    public String flights(@RequestParam(name="lamin", required=false, defaultValue = "45.8389") double lamin,
+                          @RequestParam(name="lomin", required=false, defaultValue = "5.9962") double lomin,
+                          @RequestParam(name="lamax", required=false, defaultValue = "47.8229") double lamax,
+                          @RequestParam(name="lomax", required=false, defaultValue = "10.5226") double lomax,
+                          Model model) {
+
+        log.info("Flights - Arguments (lamin-lomin-lamax-lomax) " + lamin + lomin + lamax + lomax);
 
         model.addAttribute("lamin", lamin);
         model.addAttribute("lomin", lomin);
         model.addAttribute("lamax", lamax);
         model.addAttribute("lomax", lomax);
 
-        if(cache == null) {
-            updateStateInfo();
+        /* Update cache if not previously updated */
+        if (cache == null) {
+            updateFlights();
         }
-        statesToModel(model);
+
+        model.addAttribute("time", dateFormat.format(date));
+        model.addAttribute("flights", cache);
+
         return "states";
     }
 
-    private States getStates(Model model){
-        //log.info("GET - /states - getStates");
-        String url = "https://opensky-network.org/api/states/all";
-        UriComponentsBuilder builder =  UriComponentsBuilder.fromHttpUrl(url)
-                                        .queryParam("lamin", model.getAttribute("lamin"))
-                                        .queryParam("lomin", model.getAttribute("lomin"))
-                                        .queryParam("lamax", model.getAttribute("lamax"))
-                                        .queryParam("lomax", model.getAttribute("lomax"));
-        url = builder.build().toUriString();
-        //log.info("GET - /states - getStates - URL is " + url);
-        return restTemplate.getForObject(url, States.class);
-    }
-
-    public void statesToModel (Model model) {
-        model.addAttribute("time", dateFormat.format(date));
-        model.addAttribute("states", cache);
-    }
-
-    public List<State> getListOfStates() {
-        //log.info("GET - /getListOfStates");
-        String url = "https://opensky-network.org/api/states/all?lamin=45.8389&lomin=5.0&lamax=47.8229&lomax=11.5226";
-        UriComponentsBuilder builder =  UriComponentsBuilder.fromHttpUrl(url);
-        url = builder.build().toUriString();
-        //log.info("GET - /states - getListOfStates - URL is " + url);
-        States states = restTemplate.getForObject(url, States.class);
-
-        //log.info("GET - /states - getListOfStates - results are " + states.getStates());
-        return states.getStates();
-    }
-
-
-    Date date = new Date();
-
+    /* ############################################################################################################## */
     @Scheduled(fixedRate = 10000)
-    public void updateStateInfo() {
+    public void updateFlights() {
         log.info("Updating State DB from API Info");
 
         try {
@@ -118,8 +91,35 @@ public class StatesController {
         });
     }
 
-    @GetMapping("/addState")
-    public String addState( @RequestParam(name="icao", required=false, defaultValue = "5661692D746520666F6465722C204D61726961") String icao,
+    public List<State> getListOfStates() {
+        //log.info("GET - /getListOfStates");
+
+        /* Build URL */
+        String url = "https://opensky-network.org/api/states/all?lamin=45.8389&lomin=5.0&lamax=47.8229&lomax=11.5226";
+        UriComponentsBuilder builder =  UriComponentsBuilder.fromHttpUrl(url);
+        url = builder.build().toUriString();
+
+        /* In production
+        String url = "https://opensky-network.org/api/states/all";
+        UriComponentsBuilder builder =  UriComponentsBuilder.fromHttpUrl(url)
+                .queryParam("lamin", model.getAttribute("lamin"))
+                .queryParam("lomin", model.getAttribute("lomin"))
+                .queryParam("lamax", model.getAttribute("lamax"))
+                .queryParam("lomax", model.getAttribute("lomax"));
+        url = builder.build().toUriString();
+        */
+
+        //log.info("GET - /states - getListOfStates - URL is " + url);
+        States states = restTemplate.getForObject(url, States.class);
+
+        //log.info("GET - /states - getListOfStates - results are " + states.getStates());
+        return states.getStates();
+    }
+
+    /* ############################################################################################################## */
+    /* API Endpoint */
+    @GetMapping("/addFlight")
+    public String addFlight(@RequestParam(name="icao", required=false, defaultValue = "5661692D746520666F6465722C204D61726961") String icao,
                             @RequestParam(name="callsgn", required=false, defaultValue = "PQP420") String callsgn,
                             @RequestParam(name="origin", required=false, defaultValue = "Portugal") String origin,
                             @RequestParam(name="time", required=false, defaultValue = "150000000") int time,
@@ -128,23 +128,24 @@ public class StatesController {
                             @RequestParam(name="geoalt", required=false, defaultValue = "0.0") double geoalt,
                             @RequestParam(name="vel", required=false, defaultValue = "0.0") double vel, Model model) {
 
-        log.info("GET - /addState");
+        log.info("Adding a new state to the database");
 
-        State exampleState = new State();
-        exampleState.setIcao24(icao);
-        exampleState.setCallsign(callsgn);
-        exampleState.setOrigin_country(origin);
-        exampleState.setTime_position(time);
-        exampleState.setLatitude(lat);
-        exampleState.setLongitude(lon);
-        exampleState.setGeo_altitude(geoalt);
-        exampleState.setVelocity(vel);
-        exampleState.setUserCreated(true);
-        repository.saveAndFlush(exampleState);
+        State newState = new State();
+        newState.setIcao24(icao);
+        newState.setCallsign(callsgn);
+        newState.setOrigin_country(origin);
+        newState.setTime_position(time);
+        newState.setLatitude(lat);
+        newState.setLongitude(lon);
+        newState.setGeo_altitude(geoalt);
+        newState.setVelocity(vel);
+        newState.setUserCreated(true);
+        repository.saveAndFlush(newState);
 
-        log.info("Saved State to DB");
+        log.info("Saved State" + newState + " to database");
 
-        model.addAttribute("state", exampleState);
+        model.addAttribute("flight", newState);
+
         return "addState";
     }
 }

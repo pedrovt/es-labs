@@ -38,16 +38,16 @@
         </thead>
         <tbody>
         <tr>
-            <td><span th:text="${state.getFlightID()}"></span></td>
-            <td><span th:text="${state.isUserCreated()}"></span></td>
-            <td><span th:text="${state.getIcao24()}"></span></td>
-            <td><span th:text="${state.getCallsign()}"></span></td>
-            <td><span th:text="${state.getOrigin_country()}"></span></td>
-            <td><span th:text="${state.getTime_position()}"></span></td>
-            <td><span th:text="${state.getLatitude()}"></span></td>
-            <td><span th:text="${state.getLongitude()}"></span></td>
-            <td><span th:text="${state.getGeo_altitude()}"></span></td>
-            <td><span th:text="${state.getVelocity()}"></span></td>
+            <td><span th:text="${flight.getFlightID()}"></span></td>
+            <td><span th:text="${flight.isUserCreated()}"></span></td>
+            <td><span th:text="${flight.getIcao24()}"></span></td>
+            <td><span th:text="${flight.getCallsign()}"></span></td>
+            <td><span th:text="${flight.getOrigin_country()}"></span></td>
+            <td><span th:text="${flight.getTime_position()}"></span></td>
+            <td><span th:text="${flight.getLatitude()}"></span></td>
+            <td><span th:text="${flight.getLongitude()}"></span></td>
+            <td><span th:text="${flight.getGeo_altitude()}"></span></td>
+            <td><span th:text="${flight.getVelocity()}"></span></td>
         </tr>
         </tbody>
     </table>
