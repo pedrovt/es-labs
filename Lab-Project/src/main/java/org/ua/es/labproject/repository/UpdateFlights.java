@@ -3,7 +3,7 @@ package org.ua.es.labproject.repository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 import org.ua.es.labproject.models.APIResult;
@@ -14,14 +14,14 @@ import java.util.List;
 
 /**
  * labproject - UpdateFlights <br>
- * Not used - issue with autowired prevented this code from being decoupled from FlightController <br>
+ * <b>Not used</b> - issue with autowired prevented this code from being decoupled from FlightController <br>
  * As of March 14, no solution was found <br>
  *
  * @author Paulo Vasconcelos paulobvasconcelos@gmail.com
  * @author Pedro Teixeira pedro.teix@ua.pt
  * @version 1.0 - March 13, 2020
  */
-@Component
+@Service
 public class UpdateFlights {
 
     /* Constants */
@@ -39,7 +39,7 @@ public class UpdateFlights {
         try {
             /* Get states from API */
             List<Flight> resultsFromAPI = UpdateFlights.getFlightsFromAPI();
-            resultsFromAPI = resultsFromAPI.subList(0, resultsFromAPI.size()/3);
+            resultsFromAPI = resultsFromAPI.subList(0, resultsFromAPI.size()/3);        // slide for performance
 
             /* Remove old states to avoid database capacity issues */
             for (Flight flight : resultsFromAPI) {
@@ -56,6 +56,7 @@ public class UpdateFlights {
         } catch (Exception e) {
             log.error("ERROR! Error updating state cache (repository/database) with OpenSky API");
             log.error("API not available (" + e.toString() + ")");
+            e.printStackTrace();
             log.warn("No changes to cache");
         }
 

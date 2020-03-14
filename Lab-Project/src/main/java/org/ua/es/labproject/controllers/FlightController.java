@@ -70,6 +70,7 @@ public class FlightController {
     /* Scheduled task */
     @Scheduled(fixedRate = 10000)
     public void updateFlights() {
+        log.warn("[Scheduled Task] The time is now {}", dateFormat.format(new Date()));
         log.info("Updating state cache (repository/database) with OpenSky API Info");
 
         try {
@@ -100,7 +101,6 @@ public class FlightController {
     }
 
     private List<Flight> getFlightsFromAPI() {
-        log.warn("[Scheduled Task] The time is now {}", dateFormat.format(new Date()));
         log.info("Obtaining list of states from OpenSky API");
 
         /* Build URL */
