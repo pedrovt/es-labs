@@ -1,5 +1,6 @@
 package org.ua.es.labproject;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
@@ -9,6 +10,11 @@ import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.web.client.RestTemplate;
+import org.ua.es.labproject.models.Flight;
+
+import java.util.Date;
+import java.util.LinkedList;
+import java.util.List;
 
 @SpringBootApplication
 @EnableScheduling

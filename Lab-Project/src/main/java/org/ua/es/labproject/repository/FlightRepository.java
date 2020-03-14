@@ -1,6 +1,7 @@
-package org.ua.es.labproject.models;
+package org.ua.es.labproject.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.ua.es.labproject.models.Flight;
 
 import java.util.List;
 

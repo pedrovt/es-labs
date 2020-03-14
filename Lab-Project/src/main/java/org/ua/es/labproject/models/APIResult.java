@@ -14,14 +14,14 @@ import java.util.List;
  * @version 2.0 - March 11, 2020
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class API_Result {
+public class APIResult {
 
     private int time;
     private List<List> states;
     @JsonIgnore
     private List<Flight> parsed_flights;
 
-    public API_Result() {
+    public APIResult() {
 
     }
 

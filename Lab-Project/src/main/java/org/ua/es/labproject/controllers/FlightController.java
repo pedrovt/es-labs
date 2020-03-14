@@ -10,10 +10,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
-import org.ua.es.labproject.ScheduledTask;
-import org.ua.es.labproject.models.API_Result;
+import org.ua.es.labproject.models.APIResult;
 import org.ua.es.labproject.models.Flight;
-import org.ua.es.labproject.models.FlightRepository;
+import org.ua.es.labproject.repository.FlightRepository;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -31,7 +30,7 @@ import java.util.List;
 public class FlightController {
     /* ############################################################################################################## */
     /* Constants */
-    private static final Logger log = LoggerFactory.getLogger(ScheduledTask.class);
+    private static final Logger log = LoggerFactory.getLogger(FlightController.class);
     private static final SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
 
     /* Instance Fields */
@@ -68,6 +67,7 @@ public class FlightController {
     }
 
     /* ############################################################################################################## */
+    /* Scheduled task */
     @Scheduled(fixedRate = 10000)
     public void updateFlights() {
         log.info("Updating state cache (repository/database) with OpenSky API Info");
@@ -99,7 +99,8 @@ public class FlightController {
         cache.sort((o1, o2) -> (int) (o1.getFlightID() - o2.getFlightID()));        // order cache
     }
 
-    public List<Flight> getFlightsFromAPI() {
+    private List<Flight> getFlightsFromAPI() {
+        log.warn("[Scheduled Task] The time is now {}", dateFormat.format(new Date()));
         log.info("Obtaining list of states from OpenSky API");
 
         /* Build URL */
@@ -119,7 +120,7 @@ public class FlightController {
         */
 
         /* Retrieve results and automatically parse them into a list of Flights */
-        API_Result apiResult = restTemplate.getForObject(url, API_Result.class);
+        APIResult apiResult = restTemplate.getForObject(url, APIResult.class);
         log.info("Success obtaining list of states from OpenSky API");
         //log.info("Results are " + states.getStates());
 
