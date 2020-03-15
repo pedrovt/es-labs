@@ -39,8 +39,8 @@ public class FlightController {
     /* Instance Fields */
     @Autowired private RestTemplate restTemplate;
     @Autowired private FlightRepository repository;
-    @Autowired private KafkaProd kafkaProducer;
-    @Autowired private KafkaCons kafkaConsumer;
+    private KafkaProd kafkaProducer = new KafkaProd();
+    private KafkaCons kafkaConsumer = new KafkaCons();
     private List<Flight> cache;
     private Date date = new Date();
 
@@ -173,6 +173,7 @@ public class FlightController {
         log.info("Logging page. Topic is log");
 
         /* Obtain from Kafka */
+        /* THIS PART SHOULD WORK BUT IT'S UNTESTED BECAUSE OF DB ISSUES" */
         List<String> topics = new ArrayList<>();
         topics.add("log");
         List<String> messages = kafkaConsumer.consume(topics);

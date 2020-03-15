@@ -1,6 +1,10 @@
 version: '2'
 services:
   labproject:
+    depends_on:
+      - db
+      - zookeeper
+      - kafka
     build: .
     container_name: labproject-springboot
     ports:
@@ -27,7 +31,7 @@ services:
     environment:
       KAFKA_ADVERTISED_HOST_NAME: 172.28.0.3
       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
-      KAFKA_CREATE_TOPICS: "logs:1:1"
+      KAFKA_CREATE_TOPICS: "logs:1:1,data:1:1"
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
     networks:
@@ -45,11 +49,12 @@ services:
       MYSQL_PASSWORD: pedro
       MYSQL_USER: pedro
       MYSQL_DATABASE: flights
+      MYSQL_ROOT_HOST: '%'
     volumes:
       - c:\Docker\labproject\mysql:/var/lib/mysql
     networks:
       labproject-internal_net:
-        ipv4_address: 172.28.0.100
+        ipv4_address: 172.28.0.6
 
 networks:
   labproject-internal_net:

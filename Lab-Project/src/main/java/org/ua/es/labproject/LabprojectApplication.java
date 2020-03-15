@@ -37,16 +37,6 @@ public class LabprojectApplication {
         return builder.build();
     }
 
-    @Bean
-    public KafkaCons kafkaConsumer() {
-        return new KafkaCons();
-    }
-
-    @Bean
-    public KafkaProd kafkaProducer() {
-        return new KafkaProd();
-    }
-
     // @Override
     // public void run(String... args) {
 
