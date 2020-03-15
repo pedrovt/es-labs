@@ -1,0 +1,51 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Lab Project</title>
+
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Roboto+Slab:400,700|Material+Icons" rel="stylesheet" type="text/css">
+
+</head>
+<body>
+<nav class="navbar navbar-expand-md navbar-dark bg-primary fixed-top" style="text-align: center;  display: inline-block; float: none; vertical-align: top;">
+    <a class="navbar-brand" href="#"><i class="material-icons d-inline-block align-top">flight_takeoff</i> OpenSky Lab Project</a>
+</nav>
+
+<br>
+<br>
+<br>
+
+<main role="main" class="container">
+
+    <h1 style="text-align: center;">Logging info</h1>
+    <h2>From Kakfa topic log</h2>
+    <br><br>
+    <table class="table table-striped">
+        <thead class="thead-dark">
+        <tr>
+            <th> ID </th>
+            <th> User Generated </th>
+            <th> ICAO24 </th>
+            <th> Callsign </th>
+            <th> Origin country </th>
+            <th> Time position </th>
+            <th> Latitude </th>
+            <th> Longitude </th>
+            <th> Geoaltitude</th>
+            <th> Velocity </th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="message : ${messages}">
+            <td><span th:text="${message}"></span></td>
+
+        </tr>
+        </tbody>
+    </table>
+
+</main><!-- /.container -->
+
+</body>
+</html>

@@ -81,8 +81,12 @@
             <artifactId>h2</artifactId>
         </dependency>
 
-        <!-- jpa, crud repository -->
-
+        <!-- Kafka -->
+        <dependency>
+            <groupId>org.apache.kafka</groupId>
+            <artifactId>kafka_2.12</artifactId>
+            <version>2.1.1</version>
+        </dependency>
 
         <!-- MySQL -->
         <dependency>

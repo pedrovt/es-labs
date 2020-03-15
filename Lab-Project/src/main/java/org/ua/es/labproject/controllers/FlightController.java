@@ -10,11 +10,14 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
+import org.ua.es.labproject.kafka.KafkaCons;
+import org.ua.es.labproject.kafka.KafkaProd;
 import org.ua.es.labproject.models.APIResult;
 import org.ua.es.labproject.models.Flight;
 import org.ua.es.labproject.repository.FlightRepository;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -36,6 +39,8 @@ public class FlightController {
     /* Instance Fields */
     @Autowired private RestTemplate restTemplate;
     @Autowired private FlightRepository repository;
+    @Autowired private KafkaProd kafkaProducer;
+    @Autowired private KafkaCons kafkaConsumer;
     private List<Flight> cache;
     private Date date = new Date();
 
@@ -159,4 +164,24 @@ public class FlightController {
 
         return "addFlight";
     }
+
+    /* ############################################################################################################## */
+    /* API Endpoint */
+    @GetMapping("/logging")
+    public String logging(Model model) {
+
+        log.info("Logging page. Topic is log");
+
+        /* Obtain from Kafka */
+        List<String> topics = new ArrayList<>();
+        topics.add("log");
+        List<String> messages = kafkaConsumer.consume(topics);
+
+        log.info("Obtained messages" + messages);
+
+        model.addAttribute("messages", messages);
+
+        return "messages";
+    }
+
 }
