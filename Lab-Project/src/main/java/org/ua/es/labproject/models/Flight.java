@@ -4,24 +4,23 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import java.util.List;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 /**
- * labproject - PublicAPI_Entry <br>
- * Based on given examples <br>
+ * labproject - State <br>
+ *
+ * @author Paulo Vasconcelos paulobvasconcelos@gmail.com
  * @author Pedro Teixeira pedro.teix@ua.pt
- * @version 1.0 - February 22, 2020
+ * @version 2.0 - March 11, 2020
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
 @Entity
-public class State {
+@Table(name = "Flight")
+public class Flight {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+    private Long flightID;
 
     private String icao24;
     private String callsign;
@@ -40,12 +39,26 @@ public class State {
     private String squawk;
     private String spi;
     private int position_source;
+    private boolean userCreated;
 
 
-    public State() {
+    public Flight() {
     }
 
-    public State(List state) {
+    /**
+     * Constructor for automatically parsed flights
+     * @param state
+     */
+    public Flight(List state) {
+        this(state, false);
+    }
+
+    /**
+     * Constructor for user generated flights
+     * @param state
+     * @param userCreated
+     */
+    public Flight(List state, boolean userCreated) {
         setIcao24(state.get(0));
         setCallsign(state.get(1));
         setOrigin_country(state.get(2));
@@ -63,6 +76,11 @@ public class State {
         setSquawk(state.get(14));
         setSpi(state.get(15));
         setPosition_source(state.get(16));
+        setUserCreated(userCreated);
+    }
+
+    public Long getFlightID() {
+        return flightID;
     }
 
     public String getIcao24() {
@@ -309,6 +327,13 @@ public class State {
                 '}';
     }
 
+    public boolean isUserCreated() {
+        return userCreated;
+    }
+
+    public void setUserCreated(boolean userCreated) {
+        this.userCreated = userCreated;
+    }
 }
 
 
