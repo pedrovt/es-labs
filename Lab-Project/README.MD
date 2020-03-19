@@ -13,6 +13,7 @@ Run `./mvnw -DskipTests package` (Linux)
 
 ### B. Deploy application
 
+If you're running the project in a Linux machine, open the docker-compose.yml file and change the database volume (comment line 66 and uncomment line 68)
 Run `docker-compose build` then `docker-compose up`
 
 ### C. Test application
