@@ -11,7 +11,7 @@ Run `.\mvnw.cmd -DskipTests package`
 
 ### B. Deploy application
 
-Run `docker-compose up`
+Run `docker-compose build` then `docker-compose up`
 
 ### C. Test application
 - Can be a bit slow before first being able to use the application (and show a 404 error in the meantime)
