@@ -31,7 +31,7 @@ public class KafkaProd {
     /* ############################################################################################################## */
     /* Constructors */
     public KafkaProd() {
-        this("localhost:9092");
+        this("172.28.0.3:9092");
     }
 
     public KafkaProd(String bootstrapServers) {

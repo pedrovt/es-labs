@@ -32,16 +32,7 @@ public class KafkaCons {
     /* ############################################################################################################## */
     /* Constructors */
     public KafkaCons() {
-        this("localhost:9092");
-    }
-
-    public KafkaCons(String bootstrapServers) {
-        props.put("bootstrap.servers", bootstrapServers);
-        props.put("key.deserializer", "org.apache.kafka.common.serialization.StringDeserializer");
-        props.put("value.deserializer", "org.apache.kafka.common.serialization.StringDeserializer");
-        props.put("group.id", "labproject");
-        // log4j.logger.org.apache.kafka = WARN;
-        consumer = new KafkaConsumer<String, String>(props);
+        consumer = new KafkaConsumer<String, String>();
     }
 
     /* ############################################################################################################## */
