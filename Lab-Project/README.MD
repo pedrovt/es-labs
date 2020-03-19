@@ -5,7 +5,9 @@ To run, open a command prompt on the root of the project and follow the steps:
 
 ### A. Package
 
-Run `.\mvnw.cmd -DskipTests package`
+Run `.\mvnw.cmd -DskipTests package` (Windows)
+
+Run `./mvnw -DskipTests package` (Linux)
 
 `mvn -DskipTests package` if Maven is installed
 
