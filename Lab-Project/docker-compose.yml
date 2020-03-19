@@ -62,7 +62,10 @@ services:
       MYSQL_DATABASE: flights
       MYSQL_ROOT_HOST: '%'
     volumes:
+      # Windows host
       - c:\Docker\labproject\mysql:/var/lib/mysql
+      # Linux host
+#      - ./mysql:/var/lib/mysql
     networks:
       labproject-net:
         ipv4_address: 172.28.0.2
