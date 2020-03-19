@@ -19,28 +19,24 @@
 
 <main role="main" class="container">
 
-    <h1 style="text-align: center;">Logging info</h1>
-    <h2>From Kakfa topic log</h2>
+    <h1 style="text-align: center;">Message Registry</h1>
+    <h2>From Kafka topics <i>logs</i> and <i>data</i></h2>
     <br><br>
     <table class="table table-striped">
         <thead class="thead-dark">
         <tr>
-            <th> ID </th>
-            <th> User Generated </th>
-            <th> ICAO24 </th>
-            <th> Callsign </th>
-            <th> Origin country </th>
-            <th> Time position </th>
-            <th> Latitude </th>
-            <th> Longitude </th>
-            <th> Geoaltitude</th>
-            <th> Velocity </th>
+            <th> Type </th>
+            <th> Message </th>
         </tr>
         </thead>
         <tbody>
-        <tr th:each="message : ${#messages}">
+        <tr th:each="message : ${logs}">
+            <td>Log</td>
             <td><span th:text="${message}"></span></td>
-
+        </tr>
+        <tr th:each="message : ${data}">
+            <td>Data</td>
+            <td><span th:text="${message}"></span></td>
         </tr>
         </tbody>
     </table>

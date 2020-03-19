@@ -1,15 +1,13 @@
 package org.ua.es.labproject.kafka;
 
-import org.apache.kafka.clients.consumer.KafkaConsumer;
-import org.apache.kafka.clients.consumer.Consumer;
-import org.apache.kafka.clients.consumer.ConsumerRecords;
-import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.kafka.annotation.KafkaListener;
+import org.springframework.stereotype.Service;
 
+import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Properties;
 
 /**
  * labproject - KafkaConsumer <br>
@@ -19,45 +17,35 @@ import java.util.Properties;
  * @author Pedro Teixeira pedro.teix@ua.pt
  * @version 2.0 - March 11, 2020
  */
+@Service
 public class KafkaCons {
+
     /* ############################################################################################################## */
     /* Constants */
-    private static final Logger log = LoggerFactory.getLogger(KafkaCons.class);
+    private final Logger logger = LoggerFactory.getLogger(KafkaCons.class);
 
     /* ############################################################################################################## */
     /* Instance Fields */
-    private Properties props = new Properties();
-    private Consumer<String, String> consumer;
+    private List<String> logs_messages = new LinkedList<>();
+    private List<String> data_messages = new LinkedList<>();
 
-    /* ############################################################################################################## */
-    /* Constructors */
-    public KafkaCons() {
-        consumer = new KafkaConsumer<String, String>();
+    public List<String> getLogs_messages() {
+        return logs_messages;
     }
 
-    /* ############################################################################################################## */
-    /* Consume */
-    public List<String> consume(List<String> topics) {
-
-        consumer.subscribe(topics);
-        List<String> messages = new LinkedList<>();
-
-        try {
-            while (true) {
-                ConsumerRecords<String, String> records = consumer.poll(10);
-                for (ConsumerRecord<String, String> record : records) {
-                    System.out.println(record.value());
-                    messages.add(record.value());
-                }
-            }
-        } catch (Exception e) {
-            // System.out.println(e.getMessage());
-        } finally {
-            consumer.close();
-
-        }
-
-        return messages;
+    public List<String> getData_messages() {
+        return data_messages;
     }
 
+    @KafkaListener(topics = "logs", groupId = "labproject")
+    private void consumeLogs(String message) throws IOException {
+        logger.info(String.format("#### -> Consumed message -> %s", message));
+        logs_messages.add(message);
+    }
+
+    @KafkaListener(topics = "data", groupId = "labproject")
+    private void consumeData(String message) throws IOException {
+        logger.info(String.format("#### -> Consumed message -> %s", message));
+        data_messages.add(message);
+    }
 }

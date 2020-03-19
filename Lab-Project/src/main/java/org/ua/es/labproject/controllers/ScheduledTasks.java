@@ -28,6 +28,7 @@ public class ScheduledTasks {
     //@Scheduled(fixedRate = 10000)
     public void updateFlightsScheduled() {
         log.warn("[Scheduled Task] The time is now {}", dateFormat.format(new Date()));
+
         UpdateFlights.updateFlights();
     }
 }
